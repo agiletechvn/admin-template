@@ -74,7 +74,7 @@ class App extends Component {
 
         return (
             <Admin
-                title="Posters Galore Admin"
+                title="Agiletech Admin"
                 dataProvider={dataProvider}
                 customReducers={{ theme: themeReducer }}
                 customSagas={sagas}
