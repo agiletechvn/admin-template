@@ -6,7 +6,7 @@ exports.start = () =>
         const server = express();
         server.use(
             '/',
-            express.static(path.join(__dirname, '../examples/simple/dist'))
+            express.static(path.join(__dirname, '../src/admin/dist'))
         );
 
         server.on('error', err => {

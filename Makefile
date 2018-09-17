@@ -6,25 +6,11 @@ help:
 install: package.json ## install dependencies
 	@yarn
 
-run: run-simple
+run: 
+	@yarn -s run-admin
 
-run-simple: ## run the simple example
-	@BABEL_ENV=cjs yarn -s run-simple
-
-run-tutorial: ## run the tutorial example
-	@yarn -s run-tutorial
-
-run-demo: ## run the demo example
-	@yarn -s run-demo
-
-build-demo: ## compile the demo example to static js
-	@yarn -s build-demo
-
-run-graphql-demo: ## run the demo example
-	@yarn -s run-graphql-demo
-
-run-graphcool-demo: ## run the demo example
-	@yarn -s run-graphcool-demo
+build-admin: ## compile the admin src to static js
+	@yarn -s build-admin
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";
@@ -83,7 +69,7 @@ build-ra-tree-ui-materialui:
 
 build-data-generator:
 	@echo "Transpiling data-generator files...";
-	@cd ./examples/data-generator && yarn -s build && yarn -s build-esm
+	@cd ./src/data-generator && yarn -s build && yarn -s build-esm
 
 build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-ra-tree-core build-ra-tree-ui-materialui build-data-generator ## compile ES6 files to JS
 
@@ -116,7 +102,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && BABEL_ENV=cjs yarn -s build; \
+		cd src/admin && BABEL_ENV=cjs yarn -s build; \
 	fi
 
 	@NODE_ENV=test cd cypress && yarn -s test
