@@ -71,10 +71,6 @@ const renderInput = ({
 );
 
 class Login extends Component {
-    state = {
-        step: 1,
-    };
-
     login = auth =>
         this.props.userLogin(
             auth,
@@ -83,78 +79,37 @@ class Login extends Component {
                 : '/'
         );
 
-    renderStep() {
+    render() {
         const { classes, handleSubmit, isLoading, translate } = this.props;
-        const { step } = this.state;
-        switch (step) {
-            case 1:
-                return (
-                    <div>
+        return (
+            <div className={classes.main}>
+                <Card className={classes.card}>
+                    <form onSubmit={handleSubmit(this.login)}>
+                        <div className={classes.hint}>
+                            <img
+                                className={classes.logo}
+                                src="/images/logo.png"
+                            />{' '}
+                            | <span>Fleet</span>
+                        </div>
+                        <strong>Chào mừng đến Veep portal</strong>
+                        <br />
+                        <small>Vui lòng đăng nhập bằng số điện thoại</small>
                         <div className={classes.form}>
                             <div className={classes.input}>
-                                <strong>Chào mừng đến Veep portal</strong>
-                                <br />
-                                <small>
-                                    Vui lòng đăng nhập bằng số điện thoại
-                                </small>
                                 <Field
-                                    name="phonenumber"
+                                    name="username"
                                     component={renderInput}
-                                    label={translate('ra.auth.phonenumber')}
+                                    label={translate('ra.auth.username')}
                                     disabled={isLoading}
                                 />
                             </div>
-                        </div>
-                        <CardActions className={classes.actions}>
-                            <Button
-                                variant="raised"
-                                onClick={() =>
-                                    this.setState({ step: step + 1 })
-                                }
-                                style={{ backgroundColor: '#FFE401' }}
-                                disabled={isLoading}
-                                className={classes.button}
-                                fullWidth
-                            >
-                                {isLoading && (
-                                    <CircularProgress size={25} thickness={2} />
-                                )}
-                                {translate('ra.auth.continue')}
-                            </Button>
-                        </CardActions>
-                        <small>Bạn chưa có app của Veep?</small>
-                        <div
-                            style={{ flex: 1, justifyContent: 'space-around' }}
-                        >
-                            <img src="/images/app-store.png" />
-                            <img src="/images/google-play.png" />
-                        </div>
-                    </div>
-                );
-
-            case 2:
-                return (
-                    <form onSubmit={handleSubmit(this.login)}>
-                        <div className={classes.form}>
                             <div className={classes.input}>
-                                <strong>Nhập mã OTP</strong>
-                                <br />
-                                <small>
-                                    Mã OTP đã được gửi vào app trên điện thoại
-                                    của bạn.{' '}
-                                    <a
-                                        onClick={() =>
-                                            this.setState({ step: step - 1 })
-                                        }
-                                    >
-                                        Quay lại
-                                    </a>{' '}
-                                    để đổi số điện thoại khác.
-                                </small>
                                 <Field
-                                    name="otp"
+                                    name="password"
                                     component={renderInput}
-                                    label={translate('ra.auth.otp')}
+                                    label={translate('ra.auth.password')}
+                                    type="password"
                                     disabled={isLoading}
                                 />
                             </div>
@@ -171,38 +126,19 @@ class Login extends Component {
                                 {isLoading && (
                                     <CircularProgress size={25} thickness={2} />
                                 )}
-                                {translate('ra.auth.login')}
-                            </Button>
-
-                            <Button
-                                variant="raised"
-                                style={{ backgroundColor: '#FFE401' }}
-                                disabled={isLoading}
-                                className={classes.button}
-                                fullWidth
-                            >
-                                {translate('ra.auth.resend')}
+                                {translate('ra.auth.signin')}
                             </Button>
                         </CardActions>
+                        <small>Bạn chưa có app của Veep?</small>
+                        <div className="d-flex justify-content-between">
+                            <img src="/images/app-store.png" />
+                            <img src="/images/google-play.png" />
+                        </div>
+                        <div className="d-flex justify-content-between">
+                            <span>© Veep 2018</span>
+                            <span>Hỗ trợ trực tiếp</span>
+                        </div>
                     </form>
-                );
-        }
-    }
-
-    render() {
-        const { classes } = this.props;
-        return (
-            <div className={classes.main}>
-                <Card className={classes.card}>
-                    <div className={classes.hint}>
-                        <img className={classes.logo} src="/images/logo.png" />{' '}
-                        | <span>Fleet</span>
-                    </div>
-                    {this.renderStep()}
-                    <div className="d-flex justify-content-around">
-                        <span>© Veep 2018</span>
-                        <span>Hỗ trợ trực tiếp</span>
-                    </div>
                 </Card>
                 <Notification />
             </div>
@@ -228,8 +164,11 @@ const enhance = compose(
         validate: (values, props) => {
             const errors = {};
             const { translate } = props;
-            if (!values.phonenumber) {
-                errors.phonenumber = translate('ra.validation.required');
+            if (!values.username) {
+                errors.username = translate('ra.validation.required');
+            }
+            if (!values.password) {
+                errors.password = translate('ra.validation.required');
             }
             return errors;
         },
